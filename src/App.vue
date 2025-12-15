@@ -1,11 +1,12 @@
 <script setup>
-import { ref, reactive, watch, onMounted } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import HomeScreen from './components/HomeScreen.vue';
 import RulesScreen from "@/components/RulesScreen.vue";
 import SetupScreen from './components/SetupScreen.vue';
 import GameScreen from './components/GameScreen.vue';
 import EndScreen from './components/EndScreen.vue';
 import HotSeatGame from './components/HotSeatGame.vue';
+import MotusGame from './components/MotusGame.vue';
 
 const gameState = ref('home');
 const targetGame = ref('feud');
@@ -40,6 +41,15 @@ const prepareHotSeat = () => {
   }
 };
 
+const prepareMotus = () => {
+  targetGame.value = 'motus';
+  if (teams.team1.name && teams.team2.name) {
+    gameState.value = 'motus';
+  } else {
+    gameState.value = 'setup';
+  }
+};
+
 const handleSetupBack = () => {
   gameState.value = 'home';
 };
@@ -50,8 +60,10 @@ const launchGame = () => {
 
   if (targetGame.value === 'feud') {
     gameState.value = 'game';
-  } else {
+  } else if (targetGame.value === 'hotseat') {
     gameState.value = 'hotseat';
+  } else {
+    gameState.value = 'motus';
   }
 };
 
@@ -60,13 +72,15 @@ const backToMenu = () => {
 };
 
 const hardReset = () => {
-  if(confirm("Are you sure? This will delete team names and scores.")) {
+  if(confirm("Are you sure? This will delete team names, scores, and used words.")) {
     teams.team1.name = '';
     teams.team1.score = 0;
     teams.team2.name = '';
     teams.team2.score = 0;
 
     sessionStorage.removeItem('ff_teams');
+    sessionStorage.removeItem('motus_history');
+    sessionStorage.removeItem('hotseat_history');
 
     gameState.value = 'home';
   }
@@ -81,6 +95,7 @@ const hardReset = () => {
         :teams="teams"
         @go-to-setup="prepareFeud"
         @go-to-hotseat="prepareHotSeat"
+        @go-to-motus="prepareMotus"
         @reset-data="hardReset"
     />
 
@@ -105,6 +120,12 @@ const hardReset = () => {
 
     <HotSeatGame
         v-else-if="gameState === 'hotseat'"
+        :teams="teams"
+        @quit="backToMenu"
+    />
+
+    <MotusGame
+        v-else-if="gameState === 'motus'"
         :teams="teams"
         @quit="backToMenu"
     />

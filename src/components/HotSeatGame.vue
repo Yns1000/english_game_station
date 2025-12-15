@@ -11,11 +11,32 @@ const activeTeamKey = ref(null);
 const roundScore = ref(0);
 const timeLeft = ref(60);
 const currentIndex = ref(0);
-const words = ref([...hotseatData].sort(() => 0.5 - Math.random()));
+const words = ref([]);
 const isPaused = ref(false);
 let timerInterval = null;
 
-const currentCard = computed(() => words.value[currentIndex.value]);
+const currentCard = computed(() => words.value[currentIndex.value] || { word: 'DONE', forbidden: [] });
+
+const loadAvailableWords = () => {
+  const history = JSON.parse(sessionStorage.getItem('hotseat_history') || '[]');
+  let available = hotseatData.filter(item => !history.includes(item.word));
+
+  if (available.length < 5) {
+    available = hotseatData;
+    sessionStorage.removeItem('hotseat_history');
+  }
+
+  return available.sort(() => 0.5 - Math.random());
+};
+
+const markAsPlayed = (wordObj) => {
+  if (!wordObj || !wordObj.word) return;
+  const history = JSON.parse(sessionStorage.getItem('hotseat_history') || '[]');
+  if (!history.includes(wordObj.word)) {
+    history.push(wordObj.word);
+    sessionStorage.setItem('hotseat_history', JSON.stringify(history));
+  }
+};
 
 const selectTeam = (teamKey) => {
   activeTeamKey.value = teamKey;
@@ -23,8 +44,11 @@ const selectTeam = (teamKey) => {
 };
 
 const startGame = () => {
+  words.value = loadAvailableWords();
+  currentIndex.value = 0;
   step.value = 'playing';
   isPaused.value = false;
+
   timerInterval = setInterval(() => {
     if (!isPaused.value) {
       if (timeLeft.value > 0) {
@@ -47,12 +71,16 @@ const endGame = () => {
 
 const nextCard = (pointsToAdd) => {
   if (isPaused.value) return;
+
+  markAsPlayed(currentCard.value);
+
   if (pointsToAdd > 0) {
     roundScore.value += pointsToAdd;
     if (activeTeamKey.value) {
       props.teams[activeTeamKey.value].score += pointsToAdd;
     }
   }
+
   if (currentIndex.value < words.value.length - 1) {
     currentIndex.value++;
   } else {
@@ -67,7 +95,6 @@ const playAgain = () => {
   activeTeamKey.value = null;
   step.value = 'selection';
   isPaused.value = false;
-  words.value = [...hotseatData].sort(() => 0.5 - Math.random());
 };
 
 onUnmounted(() => clearInterval(timerInterval));

@@ -4,7 +4,7 @@ import logoCentrale from '../assets/ig2i_white.png';
 import logoThyltech from '../assets/thyltech_logo_name_white.png';
 
 defineProps(['teams']);
-const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data']);
+const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-motus']);
 </script>
 
 <template>
@@ -59,6 +59,18 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data']);
           </div>
         </button>
 
+        <div class="game-selection">
+
+          <button @click="emit('go-to-motus')" class="game-btn motus-btn">
+            <div class="icon-box-motus">M</div>
+            <div class="btn-text">
+              <span class="main">MOTUS</span>
+              <span class="sub">WORD GUESSING</span>
+            </div>
+          </button>
+
+        </div>
+
       </div>
 
     </div>
@@ -78,8 +90,6 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data']);
         <span class="member">Younes</span>
         <span class="dot">•</span>
         <span class="member">Hakim</span>
-        <span class="dot">•</span>
-        <span class="member">Tom</span>
       </div>
     </footer>
 
@@ -200,4 +210,14 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data']);
 @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+.motus-btn { background: #34495e; color: white; box-shadow: 0 10px 0 #2c3e50; }
+.motus-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 0 #2c3e50; background: #34495e; }
+.motus-btn:active { transform: translateY(5px); box-shadow: 0 0 0; }
+
+.icon-box-motus {
+  width: 40px; height: 40px; background: #e74c3c; color: white;
+  font-family: 'Anton'; font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+  border-radius: 5px; border: 2px solid white;
+}
 </style>
