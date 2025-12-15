@@ -1,0 +1,42 @@
+[
+  {
+    "question": "Name something specifically associated with London",
+    "answers": [
+      { "text": "BIG BEN", "points": 30 },
+      { "text": "RED BUSES", "points": 25 },
+      { "text": "THE ROYAL FAMILY", "points": 15 },
+      { "text": "TEA", "points": 10 },
+      { "text": "RAIN / FOG", "points": 5 }
+    ]
+  },
+  {
+    "question": "Top excuses for not handing in your homework",
+    "answers": [
+      { "text": "I FORGOT IT", "points": 35 },
+      { "text": "DOG ATE IT", "points": 20 },
+      { "text": "PRINTER BROKE", "points": 15 },
+      { "text": "I WAS SICK", "points": 10 },
+      { "text": "LOST MY BAG", "points": 5 }
+    ]
+  },
+  {
+    "question": "Ingredients in a full English Breakfast",
+    "answers": [
+      { "text": "EGGS", "points": 28 },
+      { "text": "BACON", "points": 25 },
+      { "text": "SAUSAGES", "points": 18 },
+      { "text": "BEANS", "points": 12 },
+      { "text": "TOAST", "points": 7 }
+    ]
+  },
+  {
+    "question": "Common things people lose",
+    "answers": [
+      { "text": "KEYS", "points": 40 },
+      { "text": "PHONE", "points": 30 },
+      { "text": "WALLET / MONEY", "points": 20 },
+      { "text": "GLASSES", "points": 5 },
+      { "text": "REMOTE CONTROL", "points": 5 }
+    ]
+  }
+]
