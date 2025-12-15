@@ -1,5 +1,5 @@
 <script setup>
-import { Play, Gamepad2, CodeXml, X, Flame, Trash2, Flag } from 'lucide-vue-next';
+import { Play, Gamepad2, CodeXml, X, Flame, Trash2, Flag, ExternalLink } from 'lucide-vue-next';
 import logoCentrale from '../assets/ig2i_white.png';
 import logoThyltech from '../assets/thyltech_logo_name_white.png';
 
@@ -88,14 +88,20 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
         <img :src="logoThyltech" alt="Hyltech" class="footer-logo" />
       </div>
 
-      <div class="team-label">
+      <a href="https://github.com/Yns1000/english_game_station" target="_blank" class="team-label project-link">
         <CodeXml :size="20" />
-        <span>DEVELOPED BY</span>
-      </div>
+        <span>PROJECT SOURCE CODE</span>
+        <ExternalLink :size="14" style="margin-left: 5px; opacity: 0.7;" />
+      </a>
+
       <div class="team-names">
-        <span class="member">Younes</span>
+        <a href="https://github.com/Yns1000" target="_blank" class="member">
+          Younes <ExternalLink :size="10" class="link-icon"/>
+        </a>
         <span class="dot">•</span>
-        <span class="member">Hakim</span>
+        <a href="https://github.com/HakimFIDJEL" target="_blank" class="member">
+          Hakim <ExternalLink :size="10" class="link-icon"/>
+        </a>
       </div>
     </footer>
 
@@ -103,30 +109,14 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
 </template>
 
 <style scoped>
-/* STRUCTURE GLOBALE */
 .home-screen {
   width: 100vw;
   height: 100vh;
-  /* Flex Column permet de gérer l'espace vertical proprement */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Espace entre le haut, le contenu et le footer */
-  align-items: center;
+  display: flex; flex-direction: column; justify-content: space-between; align-items: center;
   background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-  position: relative;
-  overflow-y: auto; /* Permet le scroll si l'écran est petit */
-  overflow-x: hidden;
+  background-size: 50px 50px; position: relative; overflow-y: auto; overflow-x: hidden;
 }
 
-.finish-btn {
-  background: #f1c40f; color: black; border: none; padding: 6px 15px; margin-right: 10px;
-  border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px;
-  font-family: 'Anton'; font-size: 0.8rem; transition: transform 0.2s;
-}
-.finish-btn:hover { transform: scale(1.05); box-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
-
-/* SESSION INFO */
 .session-info {
   position: absolute; top: 20px; right: 20px;
   display: flex; align-items: center; gap: 20px;
@@ -135,18 +125,18 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
 }
 .current-teams { color: white; font-family: 'Anton'; letter-spacing: 1px; font-size: 1rem; display: flex; gap: 10px; }
 .blue { color: #3498db; } .red { color: #e74c3c; } .vs-sep { color: #aaa; margin: 0 5px; } .score { color: white; opacity: 0.8; }
-.reset-btn { background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: 'Anton'; font-size: 0.8rem; }
+.finish-btn {
+  background: #f1c40f; color: black; border: none; padding: 6px 15px; margin-right: 10px;
+  border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px;
+  font-family: 'Anton'; font-size: 0.8rem; transition: transform 0.2s;
+}
+.finish-btn:hover { transform: scale(1.05); box-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
+.reset-btn { background: #e74c3c; color: white; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-family: 'Anton'; font-size: 0.8rem; transition: background 0.2s; }
 .reset-btn:hover { background: #c0392b; }
 
-/* CONTENU CENTRAL */
 .hero-content {
-  flex: 1; /* Prend toute la place disponible */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px 0; /* Un peu d'air en haut et en bas */
-  transform: scale(0.95); /* Petite astuce pour tout faire rentrer sur les petits écrans */
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 20px 0; transform: scale(0.95);
 }
 
 .logo-area { text-align: center; margin-bottom: 30px; animation: zoomIn 0.8s; }
@@ -156,27 +146,15 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
 .line-2 { font-size: 6rem; color: #f1c40f; letter-spacing: 5px; text-shadow: 4px 4px 0 #000; }
 .edition-badge { background: white; color: black; font-family: Arial, sans-serif; font-weight: bold; font-size: 0.9rem; letter-spacing: 3px; padding: 5px 20px; border-radius: 50px; margin-top: 15px; display: inline-block; }
 
-/* GRILLE DES BOUTONS (LE 2x2 STRICT) */
-.game-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 colonnes égales */
-  gap: 25px;
-  animation: slideUp 0.8s;
-}
-
+.game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; animation: slideUp 0.8s; }
 .game-btn {
-  border: none; padding: 15px 30px; border-radius: 20px;
-  cursor: pointer; display: flex; align-items: center; gap: 15px;
-  transition: all 0.2s; position: relative; overflow: hidden;
-  width: 320px; /* Largeur fixe pour uniformité */
-  height: 90px;
+  border: none; padding: 15px 30px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 15px;
+  transition: all 0.2s; position: relative; overflow: hidden; width: 320px; height: 90px;
 }
-
 .btn-text { display: flex; flex-direction: column; text-align: left; }
 .btn-text .main { font-family: 'Anton'; font-size: 1.8rem; line-height: 1; }
 .btn-text .sub { font-family: Arial; font-size: 0.75rem; opacity: 0.8; letter-spacing: 1px; margin-top: 4px; }
 
-/* COULEURS DES JEUX */
 .feud-btn { background: #27ae60; color: white; box-shadow: 0 8px 0 #219150; }
 .feud-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 0 #219150; filter: brightness(1.1); }
 .feud-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
@@ -189,40 +167,51 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
 .motus-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 0 #2c3e50; filter: brightness(1.1); }
 .motus-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
 
-/* STYLE MILLIONAIRE (CORRIGÉ) */
-.millionaire-btn {
-  /* Dégradé Bleu Nuit -> Violet style TV */
-  background: linear-gradient(135deg, #090979 0%, #2c3e50 100%);
-  color: white;
-  box-shadow: 0 8px 0 #000040;
-  border: 1px solid rgba(255,255,255,0.2);
-}
+.millionaire-btn { background: linear-gradient(135deg, #090979 0%, #2c3e50 100%); color: white; box-shadow: 0 8px 0 #000040; border: 1px solid rgba(255,255,255,0.2); }
 .millionaire-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 0 #000040; filter: brightness(1.2); }
 .millionaire-btn:active { transform: translateY(4px); box-shadow: 0 0 0; }
 
-/* ICONES PERSONNALISÉES */
 .icon-box-motus { width: 35px; height: 35px; background: #e74c3c; color: white; font-family: 'Anton'; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 2px solid white; }
 .icon-box-mil { width: 35px; height: 35px; background: #f1c40f; color: black; font-family: 'Anton'; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid white; }
 
-/* FOOTER */
 .team-footer {
   background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);
   padding: 20px 40px; border-radius: 20px 20px 0 0;
   border-top: 1px solid rgba(255,255,255,0.1);
-  display: flex; flex-direction: column; align-items: center; gap: 5px;
-  width: 100%; max-width: 600px;
-  margin-bottom: 0; /* Collé au bas */
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  width: 100%; max-width: 600px; margin-bottom: 0;
 }
 
 .logos-container { display: flex; align-items: center; justify-content: center; margin-bottom: 5px; }
 .footer-logo { max-height: 25px; width: auto; object-fit: contain; }
 .logo-separator { margin: 0 15px; }
-.team-label { display: flex; align-items: center; gap: 8px; color: #bdc3c7; font-size: 0.7rem; letter-spacing: 2px; }
-.team-names { display: flex; align-items: center; gap: 15px; color: white; font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: 1px; }
+
+.team-label {
+  display: flex; align-items: center; gap: 8px; color: #bdc3c7; font-size: 0.7rem; letter-spacing: 2px;
+  text-decoration: none; transition: all 0.2s;
+  border-bottom: 1px solid transparent; padding-bottom: 2px;
+}
+.team-label:hover { color: #f1c40f; border-bottom-color: #f1c40f; }
+
+.team-names { display: flex; align-items: center; gap: 15px; margin-top: 5px; }
+.member {
+  color: white; font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: 1px;
+  text-decoration: none; transition: all 0.2s;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.5);
+  padding-bottom: 2px;
+  display: flex; align-items: center; gap: 5px;
+}
+.member:hover {
+  color: #f1c40f;
+  border-bottom: 1px solid #f1c40f;
+  transform: translateY(-2px);
+}
+.link-icon { opacity: 0.7; transition: opacity 0.2s; }
+.member:hover .link-icon { opacity: 1; }
+
 .dot { color: #f1c40f; font-size: 1.2rem; line-height: 0; }
 
 @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @keyframes zoomIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
 </style>

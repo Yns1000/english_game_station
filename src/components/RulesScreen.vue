@@ -115,14 +115,13 @@ const currentRule = computed(() => {
 .rules-screen {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  /* Le background est maintenant géré en inline style */
   background-size: 50px 50px;
   overflow: hidden;
-  transition: background 0.5s ease; /* Transition douce entre les couleurs */
+  transition: background 0.5s ease;
 }
 
 .rules-card {
-  background: rgba(0, 0, 0, 0.4); /* Fond un peu plus sombre pour le contraste */
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 50px;
@@ -154,7 +153,7 @@ const currentRule = computed(() => {
 
 .rule-item {
   display: flex; align-items: center; gap: 20px;
-  background: rgba(255, 255, 255, 0.05); /* Fond subtil */
+  background: rgba(255, 255, 255, 0.05);
   padding: 20px 25px; border-radius: 20px;
   border: 1px solid transparent;
   transition: all 0.3s;
@@ -199,7 +198,6 @@ const currentRule = computed(() => {
 }
 
 .primary {
-  /* Background géré dynamiquement */
   color: white;
 }
 .primary:hover { transform: translateY(-3px); filter: brightness(1.1); }

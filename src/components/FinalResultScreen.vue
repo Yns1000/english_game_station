@@ -121,7 +121,6 @@ onMounted(() => {
   position: relative; transition: all 0.5s;
 }
 
-/* STYLE GAGNANT */
 .card.winner {
   background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
   border: 3px solid #f1c40f; width: 400px; height: 550px;
@@ -134,7 +133,6 @@ onMounted(() => {
 .card.winner .score { font-family: 'Anton'; font-size: 4.5rem; color: white; text-shadow: 0 0 20px rgba(255,255,255,0.5); }
 .avatar-win { color: #f1c40f; filter: drop-shadow(0 0 20px rgba(241,196,15,0.5)); }
 
-/* STYLE PERDANT */
 .card.loser {
   background: rgba(0,0,0,0.5); border: 2px solid #333;
   width: 320px; height: 450px; opacity: 0.7;
@@ -145,7 +143,6 @@ onMounted(() => {
 .card.loser .score { font-family: 'Anton'; font-size: 2.5rem; color: #777; }
 .avatar-lose { color: #777; margin-top: 20px; }
 
-/* LE TAMPON LOSER */
 .stamp {
   position: absolute; top: 40%; left: 50%;
   transform: translate(-50%, -50%) rotate(-15deg);

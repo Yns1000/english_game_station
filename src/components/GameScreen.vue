@@ -211,7 +211,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
   position: relative;
 }
 
-/* --- BOUTON EXIT --- */
 .top-exit-btn {
   position: absolute; top: 20px; right: 20px;
   background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
@@ -222,7 +221,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
 }
 .top-exit-btn:hover { background: #c0392b; color: white; border-color: #c0392b; }
 
-/* --- HEADER --- */
 .game-header {
   display: flex; justify-content: space-between; align-items: flex-start;
   padding: 20px 60px; height: 160px;
@@ -274,7 +272,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
   box-shadow: 0 0 15px #e74c3c; transform: scale(1.1);
 }
 
-/* --- BOARD AREA --- */
 .board-area {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 20px; width: 100%; max-width: 1200px; margin: 0 auto;
@@ -328,7 +325,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
 .ans-text { font-family: 'Anton'; font-size: 1.6rem; text-transform: uppercase; }
 .ans-points { font-family: 'Anton'; font-size: 1.6rem; background: black; color: white; padding: 2px 12px; border-radius: 5px; }
 
-/* --- FOOTER --- */
 .game-footer {
   height: 80px; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
   display: flex; align-items: center; justify-content: space-between; padding: 0 40px;
@@ -351,7 +347,6 @@ onUnmounted(() => window.removeEventListener('keydown', handleKeydown));
 .icon-btn:hover { color: white; border-color: white; }
 .cheat-list { position: absolute; bottom: 80px; left: 40px; background: rgba(0,0,0,0.9); padding: 10px; border-radius: 10px; color: #aaa; font-size: 0.8rem; }
 
-/* --- OVERLAY --- */
 .strike-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,0.8);
   display: flex; justify-content: center; align-items: center; z-index: 9999;
