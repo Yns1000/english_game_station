@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive, watch } from 'vue';
+import { Volume2, VolumeX } from 'lucide-vue-next';
 import HomeScreen from './components/HomeScreen.vue';
 import RulesScreen from "@/components/RulesScreen.vue";
 import SetupScreen from './components/SetupScreen.vue';
@@ -8,6 +9,8 @@ import EndScreen from './components/EndScreen.vue';
 import HotSeatGame from './components/HotSeatGame.vue';
 import MotusGame from './components/MotusGame.vue';
 import MillionaireGame from "@/components/MillionaireGame.vue";
+import FinalResultScreen from "@/components/FinalResultScreen.vue";
+
 
 const gameState = ref('home');
 const targetGame = ref('feud');
@@ -24,6 +27,54 @@ watch(teams, (newVal) => {
   sessionStorage.setItem('ff_teams', JSON.stringify(newVal));
 }, { deep: true });
 
+const currentAudio = new Audio();
+const isMuted = ref(false);
+const currentTrack = ref('');
+
+const musicMap = {
+  home: '/sounds/millionaire.mp3',
+  result: '/sounds/millionaire.mp3',
+  feud: '/sounds/millionaire.mp3',
+  hotseat: '/sounds/millionaire.mp3',
+  motus: '/sounds/millionaire.mp3',
+  millionaire: '/sounds/millionaire.mp3'
+};
+
+const playMusic = (key) => {
+  const file = musicMap[key];
+  if (!file) return;
+
+  if (currentTrack.value === key) return;
+
+  currentTrack.value = key;
+  currentAudio.src = file;
+  currentAudio.loop = true;
+  currentAudio.volume = 0.5;
+
+  if (!isMuted.value) {
+    const playPromise = currentAudio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(error => {
+        console.log("Audio autoplay prevented by browser.");
+      });
+    }
+  }
+};
+
+const toggleMute = () => {
+  isMuted.value = !isMuted.value;
+  if (isMuted.value) currentAudio.pause();
+  else currentAudio.play();
+};
+
+watch([gameState, targetGame], ([newState, newTarget]) => {
+  if (newState === 'home' || newState === 'result') {
+    playMusic('home');
+  } else {
+    playMusic(newTarget);
+  }
+}, { immediate: true });
+
 const prepareFeud = () => {
   targetGame.value = 'feud';
   if (teams.team1.name && teams.team2.name) {
@@ -35,25 +86,19 @@ const prepareFeud = () => {
 
 const prepareHotSeat = () => {
   targetGame.value = 'hotseat';
-  if (teams.team1.name && teams.team2.name) {
-    gameState.value = 'hotseat';
-  } else {
-    gameState.value = 'setup';
-  }
+  if (teams.team1.name) gameState.value = 'rules';
+  else gameState.value = 'setup';
 };
 
 const prepareMotus = () => {
   targetGame.value = 'motus';
-  if (teams.team1.name && teams.team2.name) {
-    gameState.value = 'motus';
-  } else {
-    gameState.value = 'setup';
-  }
+  if (teams.team1.name) gameState.value = 'rules';
+  else gameState.value = 'setup';
 };
 
 const prepareMillionaire = () => {
   targetGame.value = 'millionaire';
-  if (teams.team1.name) gameState.value = 'millionaire';
+  if (teams.team1.name) gameState.value = 'rules';
   else gameState.value = 'setup';
 };
 
@@ -78,6 +123,10 @@ const backToMenu = () => {
   gameState.value = 'home';
 };
 
+const showFinalResults = () => {
+  gameState.value = 'result';
+};
+
 const hardReset = () => {
   if(confirm("Are you sure? This will delete team names, scores, and used words.")) {
     teams.team1.name = '';
@@ -97,6 +146,11 @@ const hardReset = () => {
 <template>
   <div class="app-container">
 
+    <button class="volume-btn" @click="toggleMute" :title="isMuted ? 'Unmute' : 'Mute'">
+      <VolumeX v-if="isMuted" :size="24" />
+      <Volume2 v-else :size="24" />
+    </button>
+
     <HomeScreen
         v-if="gameState === 'home'"
         :teams="teams"
@@ -104,13 +158,15 @@ const hardReset = () => {
         @go-to-hotseat="prepareHotSeat"
         @go-to-motus="prepareMotus"
         @go-to-millionaire="prepareMillionaire"
+        @finish-session="showFinalResults"
         @reset-data="hardReset"
     />
 
     <RulesScreen
         v-else-if="gameState === 'rules'"
+        :activeGame="targetGame"
         @back="gameState = 'home'"
-        @next="gameState = 'game'"
+        @next="launchGame"
     />
 
     <SetupScreen
@@ -150,6 +206,12 @@ const hardReset = () => {
         @restart="backToMenu"
     />
 
+    <FinalResultScreen
+        v-else-if="gameState === 'result'"
+        :teams="teams"
+        @back-home="backToMenu"
+    />
+
   </div>
 </template>
 
@@ -159,5 +221,29 @@ body { margin: 0; overflow: hidden; }
   width: 100vw; height: 100vh;
   background: radial-gradient(circle at center, #005f9e 0%, #000046 100%);
   display: flex; justify-content: center; align-items: center;
+}
+
+.volume-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  transition: all 0.3s;
+}
+
+.volume-btn:hover {
+  background: white;
+  color: black;
+  transform: scale(1.1);
 }
 </style>

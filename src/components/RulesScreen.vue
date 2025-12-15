@@ -1,56 +1,93 @@
 <script setup>
-import { Users, Brain, Coins, Ban, ArrowLeft, Check } from 'lucide-vue-next';
+import { computed } from 'vue';
+import {
+  Users, Brain, Coins, Ban, ArrowLeft, Check,
+  Flame, Clock, MessageSquareOff, SkipForward,
+  Keyboard, Type, Grid3X3, Eye,
+  Divide, Phone, BarChart3, Lock
+} from 'lucide-vue-next';
 
+const props = defineProps(['activeGame']);
 const emit = defineEmits(['next', 'back']);
+
+const rulesContent = {
+  feud: {
+    title: "FAMILY FEUD",
+    subtitle: "GUESS THE MOST POPULAR ANSWERS",
+    accent: "#2ecc71",
+    bg: "radial-gradient(circle at center, #27ae60 0%, #004d26 100%)",
+    steps: [
+      { icon: Users, color: 'blue', title: "2 TEAMS", text: "Face off to guess the top answers hidden on the board." },
+      { icon: Brain, color: 'purple', title: "GUESS ANSWERS", text: "Find the most popular words based on surveys." },
+      { icon: Coins, color: 'gold', title: "BANK POINTS", text: "Points go to the bank. Winner of the round takes all." },
+      { icon: Ban, color: 'red', title: "AVOID STRIKES", text: "3 wrong answers? You lose control of the board!" }
+    ]
+  },
+  hotseat: {
+    title: "HOT SEAT",
+    subtitle: "DESCRIBE WORDS UNDER PRESSURE",
+    accent: "#e74c3c",
+    bg: "radial-gradient(circle at center, #c0392b 0%, #500000 100%)",
+    steps: [
+      { icon: Flame, color: 'red', title: "THE HOT SEAT", text: "One player sits with their back to the board." },
+      { icon: Clock, color: 'gold', title: "60 SECONDS", text: "Describe as many words as possible before time runs out." },
+      { icon: MessageSquareOff, color: 'purple', title: "FORBIDDEN WORDS", text: "Don't say the word itself or the 6 forbidden words!" },
+      { icon: SkipForward, color: 'blue', title: "SKIP OR PASS", text: "Stuck? Skip it, but time is ticking!" }
+    ]
+  },
+  motus: {
+    title: "MOTUS",
+    subtitle: "CRACK THE HIDDEN WORD",
+    accent: "#3498db",
+    bg: "radial-gradient(circle at center, #3498db 0%, #001f3f 100%)",
+    steps: [
+      { icon: Type, color: 'blue', title: "GUESS THE WORD", text: "Propose a word starting with the given letter." },
+      { icon: Grid3X3, color: 'red', title: "COLOR CODES", text: "Red = Correct place. Yellow = Wrong place." },
+      { icon: Keyboard, color: 'purple', title: "KEYBOARD", text: "Use the virtual keyboard or type directly." },
+      { icon: Coins, color: 'gold', title: "EARN POINTS", text: "Find the word to score 20 points for your team." }
+    ]
+  },
+  millionaire: {
+    title: "MILLIONAIRE",
+    subtitle: "CLIMB THE LADDER TO GLORY",
+    accent: "#9b59b6",
+    bg: "radial-gradient(circle at center, #8e44ad 0%, #2c3e50 100%)",
+    steps: [
+      { icon: Brain, color: 'blue', title: "15 QUESTIONS", text: "Answer correctly to climb the money ladder." },
+      { icon: Lock, color: 'gold', title: "SAFETY NETS", text: "Secure your earnings at Q5 and Q10." },
+      { icon: BarChart3, color: 'purple', title: "USE JOKERS", text: "50:50, Phone a Friend, or Ask the Audience." },
+      { icon: Coins, color: 'red', title: "WALK AWAY", text: "Not sure? Stop and keep your current earnings." }
+    ]
+  }
+};
+
+const currentRule = computed(() => {
+  return rulesContent[props.activeGame] || rulesContent.feud;
+});
 </script>
 
 <template>
-  <div class="rules-screen">
+  <div class="rules-screen" :style="{ background: currentRule.bg }">
 
     <div class="rules-card">
       <div class="header-section">
-        <h2 class="rules-title">HOW TO PLAY</h2>
-        <div class="rules-subtitle">MASTER THE GAME IN 4 STEPS</div>
+        <h2 class="rules-title" :style="{ color: currentRule.accent }">{{ currentRule.title }}</h2>
+        <div class="rules-subtitle">{{ currentRule.subtitle }}</div>
       </div>
 
       <div class="rules-grid">
-        <div class="rule-item blue">
+        <div
+            v-for="(step, index) in currentRule.steps"
+            :key="index"
+            class="rule-item"
+            :class="step.color"
+        >
           <div class="icon-box">
-            <Users :size="32" stroke-width="2.5" />
+            <component :is="step.icon" :size="32" stroke-width="2.5" />
           </div>
           <div class="text-content">
-            <strong>2 TEAMS</strong>
-            <p>Face off to guess the top answers hidden on the board.</p>
-          </div>
-        </div>
-
-        <div class="rule-item purple">
-          <div class="icon-box">
-            <Brain :size="32" stroke-width="2.5" />
-          </div>
-          <div class="text-content">
-            <strong>GUESS ANSWERS</strong>
-            <p>Find the most popular words. Use your common sense!</p>
-          </div>
-        </div>
-
-        <div class="rule-item gold">
-          <div class="icon-box">
-            <Coins :size="32" stroke-width="2.5" />
-          </div>
-          <div class="text-content">
-            <strong>BANK POINTS</strong>
-            <p>Points go to the bank. Winner of the round takes all.</p>
-          </div>
-        </div>
-
-        <div class="rule-item red">
-          <div class="icon-box">
-            <Ban :size="32" stroke-width="2.5" />
-          </div>
-          <div class="text-content">
-            <strong>AVOID STRIKES</strong>
-            <p>3 wrong answers? You lose control of the board!</p>
+            <strong>{{ step.title }}</strong>
+            <p>{{ step.text }}</p>
           </div>
         </div>
       </div>
@@ -60,7 +97,11 @@ const emit = defineEmits(['next', 'back']);
           <ArrowLeft :size="20" />
           <span>BACK</span>
         </button>
-        <button @click="emit('next')" class="btn primary">
+        <button
+            @click="emit('next')"
+            class="btn primary"
+            :style="{ background: currentRule.accent, boxShadow: `0 10px 20px ${currentRule.accent}40` }"
+        >
           <span>UNDERSTOOD!</span>
           <Check :size="24" stroke-width="3" />
         </button>
@@ -74,20 +115,21 @@ const emit = defineEmits(['next', 'back']);
 .rules-screen {
   width: 100vw; height: 100vh;
   display: flex; align-items: center; justify-content: center;
-  background-image: linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+  /* Le background est maintenant géré en inline style */
   background-size: 50px 50px;
   overflow: hidden;
+  transition: background 0.5s ease; /* Transition douce entre les couleurs */
 }
 
 .rules-card {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.4); /* Fond un peu plus sombre pour le contraste */
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   padding: 50px;
   border-radius: 40px;
   max-width: 900px;
   width: 90%;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
   animation: zoomIn 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   display: flex; flex-direction: column; gap: 40px;
 }
@@ -96,13 +138,13 @@ const emit = defineEmits(['next', 'back']);
 
 .rules-title {
   font-family: 'Anton', sans-serif; font-size: 4rem;
-  color: #f1c40f; margin: 0; line-height: 1;
+  margin: 0; line-height: 1;
   text-transform: uppercase; letter-spacing: 2px;
-  text-shadow: 4px 4px 0 #000;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.5);
 }
 
 .rules-subtitle {
-  font-family: Arial, sans-serif; letter-spacing: 4px; color: rgba(255,255,255,0.6);
+  font-family: Arial, sans-serif; letter-spacing: 4px; color: rgba(255,255,255,0.8);
   margin-top: 10px; font-weight: bold; font-size: 0.9rem;
 }
 
@@ -112,7 +154,7 @@ const emit = defineEmits(['next', 'back']);
 
 .rule-item {
   display: flex; align-items: center; gap: 20px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.05); /* Fond subtil */
   padding: 20px 25px; border-radius: 20px;
   border: 1px solid transparent;
   transition: all 0.3s;
@@ -145,7 +187,7 @@ const emit = defineEmits(['next', 'back']);
   display: block; font-family: 'Anton', sans-serif; font-size: 1.4rem; letter-spacing: 1px; color: white;
 }
 .text-content p {
-  margin: 5px 0 0; color: #ccc; font-size: 0.95rem; line-height: 1.4; font-family: Arial, sans-serif;
+  margin: 5px 0 0; color: #ddd; font-size: 0.95rem; line-height: 1.4; font-family: Arial, sans-serif;
 }
 
 .actions { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
@@ -157,10 +199,10 @@ const emit = defineEmits(['next', 'back']);
 }
 
 .primary {
-  background: #2ecc71; color: white;
-  box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+  /* Background géré dynamiquement */
+  color: white;
 }
-.primary:hover { transform: translateY(-3px); background: #27ae60; box-shadow: 0 15px 30px rgba(46, 204, 113, 0.5); }
+.primary:hover { transform: translateY(-3px); filter: brightness(1.1); }
 
 .secondary {
   background: transparent; border: 2px solid rgba(255,255,255,0.2); color: #aaa;

@@ -1,10 +1,10 @@
 <script setup>
-import { Play, Gamepad2, CodeXml, X, Flame, Trash2 } from 'lucide-vue-next';
+import { Play, Gamepad2, CodeXml, X, Flame, Trash2, Flag } from 'lucide-vue-next';
 import logoCentrale from '../assets/ig2i_white.png';
 import logoThyltech from '../assets/thyltech_logo_name_white.png';
 
 defineProps(['teams']);
-const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-motus', 'go-to-millionaire']);
+const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-motus', 'go-to-millionaire', 'finish-session']);
 </script>
 
 <template>
@@ -12,7 +12,7 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
 
     <div v-if="teams.team1.name && teams.team2.name" class="session-info">
       <div class="current-teams">
-        SESSION:
+        SESSION :
         <span class="blue">
           {{ teams.team1.name }} <span class="score">({{ teams.team1.score }})</span>
         </span>
@@ -21,6 +21,9 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
           {{ teams.team2.name }} <span class="score">({{ teams.team2.score }})</span>
         </span>
       </div>
+      <button @click="emit('finish-session')" class="finish-btn" title="End Session & Show Results">
+        <Flag :size="18" /> FINISH
+      </button>
       <button @click="emit('reset-data')" class="reset-btn" title="Reset Teams & Scores">
         <Trash2 :size="20" /> RESET
       </button>
@@ -115,6 +118,13 @@ const emit = defineEmits(['go-to-setup', 'go-to-hotseat', 'reset-data', 'go-to-m
   overflow-y: auto; /* Permet le scroll si l'écran est petit */
   overflow-x: hidden;
 }
+
+.finish-btn {
+  background: #f1c40f; color: black; border: none; padding: 6px 15px; margin-right: 10px;
+  border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px;
+  font-family: 'Anton'; font-size: 0.8rem; transition: transform 0.2s;
+}
+.finish-btn:hover { transform: scale(1.05); box-shadow: 0 0 10px rgba(241, 196, 15, 0.5); }
 
 /* SESSION INFO */
 .session-info {
