@@ -32,11 +32,11 @@ const isMuted = ref(false);
 const currentTrack = ref('');
 
 const musicMap = {
-  home: '/sounds/millionaire.mp3',
-  result: '/sounds/millionaire.mp3',
-  feud: '/sounds/millionaire.mp3',
-  hotseat: '/sounds/millionaire.mp3',
-  motus: '/sounds/millionaire.mp3',
+  home: '/sounds/menu.mp3',
+  result: '/sounds/hot_seat.mp3',
+  feud: '/sounds/family_feud.mp3',
+  hotseat: '/sounds/hot_seat.mp3',
+  motus: '/sounds/motus.mp3',
   millionaire: '/sounds/millionaire.mp3'
 };
 
@@ -68,7 +68,7 @@ const toggleMute = () => {
 };
 
 watch([gameState, targetGame], ([newState, newTarget]) => {
-  if (newState === 'home' || newState === 'result') {
+  if (newState === 'home') {
     playMusic('home');
   } else {
     playMusic(newTarget);
